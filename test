@@ -1,0 +1,360 @@
+IDENTIFICATION DIVISION.
+       PROGRAM-ID. PATTERN-COMBINATIONS.
+       AUTHOR. CLAUDE.
+       
+       ENVIRONMENT DIVISION.
+       
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 COUNTERS.
+          05 LOOP-COUNTER          PIC 9(3) VALUE 0.
+          05 INNER-COUNTER         PIC 9(3) VALUE 0.
+          05 RESULT-VALUE          PIC 9(3) VALUE 0.
+       01 CONDITION-FLAGS.
+          05 CONDITION-MET         PIC X    VALUE 'N'.
+          05 SECOND-CONDITION      PIC X    VALUE 'N'.
+          05 THIRD-CONDITION       PIC X    VALUE 'N'.
+       01 STEP-INFO.
+          05 CURRENT-STEP          PIC 9(2) VALUE 0.
+          05 STEP-NAME             PIC X(20).
+       
+       PROCEDURE DIVISION.
+       MAIN-PROGRAM.
+           DISPLAY "PATTERN COMBINATIONS PROGRAM START".
+           DISPLAY "-------------------------------".
+           
+           PERFORM STEP-L.
+           PERFORM STEP-C.
+           PERFORM STEP-LC.
+           PERFORM STEP-CL.
+           PERFORM STEP-LN.
+           PERFORM STEP-NL.
+           PERFORM STEP-CN.
+           PERFORM STEP-NC.
+           PERFORM STEP-LCN.
+           PERFORM STEP-LNC.
+           PERFORM STEP-CLN.
+           PERFORM STEP-CNL.
+           PERFORM STEP-NLC.
+           PERFORM STEP-NCL.
+           
+           DISPLAY "-------------------------------".
+           DISPLAY "PROGRAM COMPLETED SUCCESSFULLY".
+           STOP RUN.
+       
+       *> STEP L: LOOPS
+       STEP-L.
+           MOVE 1 TO CURRENT-STEP.
+           MOVE "L: LOOPS" TO STEP-NAME.
+           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
+           
+           MOVE 1 TO LOOP-COUNTER.
+           PERFORM UNTIL LOOP-COUNTER > 3
+               DISPLAY "  LOOP ITERATION: " LOOP-COUNTER
+               ADD 1 TO LOOP-COUNTER
+           END-PERFORM.
+           
+           DISPLAY "STEP COMPLETED" CURRENT-STEP.
+       
+       *> STEP C: CONDITIONS
+       STEP-C.
+           MOVE 2 TO CURRENT-STEP.
+           MOVE "C: CONDITIONS" TO STEP-NAME.
+           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
+           
+           MOVE 5 TO RESULT-VALUE.
+           
+           IF RESULT-VALUE > 10
+               DISPLAY "  CONDITION 1: VALUE > 10"
+           ELSE IF RESULT-VALUE > 5
+               DISPLAY "  CONDITION 2: VALUE > 5"
+           ELSE IF RESULT-VALUE = 5
+               DISPLAY "  CONDITION 3: VALUE = 5"
+               MOVE 'Y' TO CONDITION-MET
+           ELSE
+               DISPLAY "  CONDITION 4: VALUE < 5"
+           END-IF.
+           
+           EVALUATE TRUE
+               WHEN CONDITION-MET = 'Y'
+                   DISPLAY "  CONDITION MET USING EVALUATE"
+               WHEN OTHER
+                   DISPLAY "  CONDITION NOT MET USING EVALUATE"
+           END-EVALUATE.
+           
+           DISPLAY "STEP COMPLETED" CURRENT-STEP.
+       
+       *> STEP LC: LOOPS WITH CONDITIONS
+       STEP-LC.
+           MOVE 3 TO CURRENT-STEP.
+           MOVE "LC: LOOPS-CONDITIONS" TO STEP-NAME.
+           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
+           
+           MOVE 1 TO LOOP-COUNTER.
+           PERFORM UNTIL LOOP-COUNTER > 5
+               DISPLAY "  LOOP ITERATION: " LOOP-COUNTER
+               
+               IF FUNCTION MOD(LOOP-COUNTER 2) = 0
+                   DISPLAY "    CONDITION MET: EVEN NUMBER"
+               ELSE
+                   DISPLAY "    CONDITION NOT MET: ODD NUMBER"
+               END-IF
+               
+               ADD 1 TO LOOP-COUNTER
+           END-PERFORM.
+           
+           DISPLAY "STEP COMPLETED" CURRENT-STEP.
+       
+       *> STEP CL: CONDITIONS WITH LOOPS
+       STEP-CL.
+           MOVE 4 TO CURRENT-STEP.
+           MOVE "CL: CONDITIONS-LOOPS" TO STEP-NAME.
+           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
+           
+           MOVE 8 TO RESULT-VALUE.
+           
+           IF RESULT-VALUE < 5
+               DISPLAY "  CONDITION: VALUE < 5"
+               MOVE 1 TO LOOP-COUNTER
+               PERFORM UNTIL LOOP-COUNTER > 3
+                   DISPLAY "    LOOP FOR SMALL VALUES: " LOOP-COUNTER
+                   ADD 1 TO LOOP-COUNTER
+               END-PERFORM
+           ELSE IF RESULT-VALUE < 10
+               DISPLAY "  CONDITION: 5 <= VALUE < 10"
+               MOVE 1 TO LOOP-COUNTER
+               PERFORM UNTIL LOOP-COUNTER > 2
+                   DISPLAY "    LOOP FOR MEDIUM VALUES: " LOOP-COUNTER
+                   ADD 1 TO LOOP-COUNTER
+               END-PERFORM
+           ELSE
+               DISPLAY "  CONDITION: VALUE >= 10"
+               MOVE 1 TO LOOP-COUNTER
+               PERFORM UNTIL LOOP-COUNTER > 1
+                   DISPLAY "    LOOP FOR LARGE VALUES: " LOOP-COUNTER
+                   ADD 1 TO LOOP-COUNTER
+               END-PERFORM
+           END-IF.
+           
+           DISPLAY "STEP COMPLETED" CURRENT-STEP.
+       
+       *> STEP LN: LOOPS WITH NESTED CALLS
+       STEP-LN.
+           MOVE 5 TO CURRENT-STEP.
+           MOVE "LN: LOOPS-NESTED" TO STEP-NAME.
+           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
+           
+           MOVE 1 TO LOOP-COUNTER.
+           PERFORM UNTIL LOOP-COUNTER > 3
+               DISPLAY "  LOOP ITERATION: " LOOP-COUNTER
+               PERFORM NESTED-PROCEDURE-1
+               ADD 1 TO LOOP-COUNTER
+           END-PERFORM.
+           
+           DISPLAY "STEP COMPLETED" CURRENT-STEP.
+       
+       *> STEP NL: NESTED CALLS WITH LOOPS
+       STEP-NL.
+           MOVE 6 TO CURRENT-STEP.
+           MOVE "NL: NESTED-LOOPS" TO STEP-NAME.
+           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
+           
+           PERFORM NESTED-PROCEDURE-2.
+           
+           DISPLAY "STEP COMPLETED" CURRENT-STEP.
+       
+       *> STEP CN: CONDITIONS WITH NESTED CALLS
+       STEP-CN.
+           MOVE 7 TO CURRENT-STEP.
+           MOVE "CN: CONDITIONS-NESTED" TO STEP-NAME.
+           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
+           
+           MOVE 15 TO RESULT-VALUE.
+           
+           IF RESULT-VALUE < 10
+               DISPLAY "  CONDITION: VALUE < 10"
+               PERFORM NESTED-PROCEDURE-1
+           ELSE
+               DISPLAY "  CONDITION: VALUE >= 10"
+               PERFORM NESTED-PROCEDURE-3
+           END-IF.
+           
+           DISPLAY "STEP COMPLETED" CURRENT-STEP.
+       
+       *> STEP NC: NESTED CALLS WITH CONDITIONS
+       STEP-NC.
+           MOVE 8 TO CURRENT-STEP.
+           MOVE "NC: NESTED-CONDITIONS" TO STEP-NAME.
+           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
+           
+           PERFORM NESTED-PROCEDURE-4.
+           
+           DISPLAY "STEP COMPLETED" CURRENT-STEP.
+       
+       *> STEP LCN: LOOPS-CONDITIONS-NESTED
+       STEP-LCN.
+           MOVE 9 TO CURRENT-STEP.
+           MOVE "LCN: LOOPS-COND-NESTED" TO STEP-NAME.
+           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
+           
+           MOVE 1 TO LOOP-COUNTER.
+           PERFORM UNTIL LOOP-COUNTER > 3
+               DISPLAY "  LOOP ITERATION: " LOOP-COUNTER
+               
+               IF FUNCTION MOD(LOOP-COUNTER 2) = 0
+                   DISPLAY "    CONDITION MET: EVEN NUMBER"
+                   PERFORM NESTED-PROCEDURE-1
+               ELSE
+                   DISPLAY "    CONDITION NOT MET: ODD NUMBER"
+                   PERFORM NESTED-PROCEDURE-3
+               END-IF
+               
+               ADD 1 TO LOOP-COUNTER
+           END-PERFORM.
+           
+           DISPLAY "STEP COMPLETED" CURRENT-STEP.
+       
+       *> STEP LNC: LOOPS-NESTED-CONDITIONS
+       STEP-LNC.
+           MOVE 10 TO CURRENT-STEP.
+           MOVE "LNC: LOOPS-NESTED-COND" TO STEP-NAME.
+           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
+           
+           MOVE 1 TO LOOP-COUNTER.
+           PERFORM UNTIL LOOP-COUNTER > 3
+               DISPLAY "  LOOP ITERATION: " LOOP-COUNTER
+               PERFORM NESTED-PROCEDURE-4
+               ADD 1 TO LOOP-COUNTER
+           END-PERFORM.
+           
+           DISPLAY "STEP COMPLETED" CURRENT-STEP.
+       
+       *> STEP CLN: CONDITIONS-LOOPS-NESTED
+       STEP-CLN.
+           MOVE 11 TO CURRENT-STEP.
+           MOVE "CLN: COND-LOOPS-NESTED" TO STEP-NAME.
+           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
+           
+           MOVE 7 TO RESULT-VALUE.
+           
+           IF RESULT-VALUE < 5
+               DISPLAY "  CONDITION: VALUE < 5"
+               MOVE 1 TO LOOP-COUNTER
+               PERFORM UNTIL LOOP-COUNTER > 2
+                   DISPLAY "    LOOP ITERATION: " LOOP-COUNTER
+                   PERFORM NESTED-PROCEDURE-1
+                   ADD 1 TO LOOP-COUNTER
+               END-PERFORM
+           ELSE IF RESULT-VALUE < 10
+               DISPLAY "  CONDITION: 5 <= VALUE < 10"
+               MOVE 1 TO LOOP-COUNTER
+               PERFORM UNTIL LOOP-COUNTER > 2
+                   DISPLAY "    LOOP ITERATION: " LOOP-COUNTER
+                   PERFORM NESTED-PROCEDURE-3
+                   ADD 1 TO LOOP-COUNTER
+               END-PERFORM
+           ELSE
+               DISPLAY "  CONDITION: VALUE >= 10"
+               PERFORM NESTED-PROCEDURE-2
+           END-IF.
+           
+           DISPLAY "STEP COMPLETED" CURRENT-STEP.
+       
+       *> STEP CNL: CONDITIONS-NESTED-LOOPS
+       STEP-CNL.
+           MOVE 12 TO CURRENT-STEP.
+           MOVE "CNL: COND-NESTED-LOOPS" TO STEP-NAME.
+           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
+           
+           MOVE 12 TO RESULT-VALUE.
+           
+           IF RESULT-VALUE < 10
+               DISPLAY "  CONDITION: VALUE < 10"
+               PERFORM NESTED-PROCEDURE-2
+           ELSE
+               DISPLAY "  CONDITION: VALUE >= 10"
+               PERFORM NESTED-PROCEDURE-5
+           END-IF.
+           
+           DISPLAY "STEP COMPLETED" CURRENT-STEP.
+       
+       *> STEP NLC: NESTED-LOOPS-CONDITIONS
+       STEP-NLC.
+           MOVE 13 TO CURRENT-STEP.
+           MOVE "NLC: NESTED-LOOPS-COND" TO STEP-NAME.
+           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
+           
+           PERFORM NESTED-PROCEDURE-6.
+           
+           DISPLAY "STEP COMPLETED" CURRENT-STEP.
+       
+       *> STEP NCL: NESTED-CONDITIONS-LOOPS
+       STEP-NCL.
+           MOVE 14 TO CURRENT-STEP.
+           MOVE "NCL: NESTED-COND-LOOPS" TO STEP-NAME.
+           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
+           
+           PERFORM NESTED-PROCEDURE-7.
+           
+           DISPLAY "STEP COMPLETED" CURRENT-STEP.
+       
+       *> NESTED PROCEDURES
+       NESTED-PROCEDURE-1.
+           DISPLAY "    NESTED CALL: PROCEDURE 1".
+       
+       NESTED-PROCEDURE-2.
+           DISPLAY "    NESTED CALL: PROCEDURE 2".
+           MOVE 1 TO LOOP-COUNTER.
+           PERFORM UNTIL LOOP-COUNTER > 2
+               DISPLAY "      NESTED LOOP ITERATION: " LOOP-COUNTER
+               ADD 1 TO LOOP-COUNTER
+           END-PERFORM.
+       
+       NESTED-PROCEDURE-3.
+           DISPLAY "    NESTED CALL: PROCEDURE 3".
+           PERFORM NESTED-PROCEDURE-1.
+       
+       NESTED-PROCEDURE-4.
+           DISPLAY "    NESTED CALL: PROCEDURE 4".
+           MOVE 3 TO RESULT-VALUE.
+           
+           IF RESULT-VALUE < 5
+               DISPLAY "      NESTED CONDITION MET: < 5"
+           ELSE
+               DISPLAY "      NESTED CONDITION NOT MET: >= 5"
+           END-IF.
+       
+       NESTED-PROCEDURE-5.
+           DISPLAY "    NESTED CALL: PROCEDURE 5".
+           MOVE 1 TO LOOP-COUNTER.
+           PERFORM UNTIL LOOP-COUNTER > 2
+               DISPLAY "      NESTED LOOP ITERATION: " LOOP-COUNTER
+               ADD 1 TO LOOP-COUNTER
+           END-PERFORM.
+       
+       NESTED-PROCEDURE-6.
+           DISPLAY "    NESTED CALL: PROCEDURE 6".
+           PERFORM NESTED-PROCEDURE-1.
+           
+           MOVE 1 TO LOOP-COUNTER.
+           PERFORM UNTIL LOOP-COUNTER > 2
+               DISPLAY "      NESTED LOOP ITERATION: " LOOP-COUNTER
+               
+               IF FUNCTION MOD(LOOP-COUNTER 2) = 0
+                   DISPLAY "        NESTED CONDITION MET: EVEN"
+               ELSE
+                   DISPLAY "        NESTED CONDITION NOT MET: ODD"
+               END-IF
+               
+               ADD 1 TO LOOP-COUNTER
+           END-PERFORM.
+       
+       NESTED-PROCEDURE-7.
+           DISPLAY "    NESTED CALL: PROCEDURE 7".
+           PERFORM NESTED-PROCEDURE-4.
+           
+           MOVE 1 TO LOOP-COUNTER.
+           PERFORM UNTIL LOOP-COUNTER > 2
+               DISPLAY "      NESTED LOOP ITERATION: " LOOP-COUNTER
+               ADD 1 TO LOOP-COUNTER
+           END-PERFORM.
