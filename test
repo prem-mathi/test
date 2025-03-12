@@ -1,360 +1,297 @@
-IDENTIFICATION DIVISION.
-       PROGRAM-ID. PATTERN-COMBINATIONS.
-       AUTHOR. CLAUDE.
-       
-       ENVIRONMENT DIVISION.
-       
-       DATA DIVISION.
-       WORKING-STORAGE SECTION.
-       01 COUNTERS.
-          05 LOOP-COUNTER          PIC 9(3) VALUE 0.
-          05 INNER-COUNTER         PIC 9(3) VALUE 0.
-          05 RESULT-VALUE          PIC 9(3) VALUE 0.
-       01 CONDITION-FLAGS.
-          05 CONDITION-MET         PIC X    VALUE 'N'.
-          05 SECOND-CONDITION      PIC X    VALUE 'N'.
-          05 THIRD-CONDITION       PIC X    VALUE 'N'.
-       01 STEP-INFO.
-          05 CURRENT-STEP          PIC 9(2) VALUE 0.
-          05 STEP-NAME             PIC X(20).
-       
-       PROCEDURE DIVISION.
-       MAIN-PROGRAM.
-           DISPLAY "PATTERN COMBINATIONS PROGRAM START".
-           DISPLAY "-------------------------------".
-           
-           PERFORM STEP-L.
-           PERFORM STEP-C.
-           PERFORM STEP-LC.
-           PERFORM STEP-CL.
-           PERFORM STEP-LN.
-           PERFORM STEP-NL.
-           PERFORM STEP-CN.
-           PERFORM STEP-NC.
-           PERFORM STEP-LCN.
-           PERFORM STEP-LNC.
-           PERFORM STEP-CLN.
-           PERFORM STEP-CNL.
-           PERFORM STEP-NLC.
-           PERFORM STEP-NCL.
-           
-           DISPLAY "-------------------------------".
-           DISPLAY "PROGRAM COMPLETED SUCCESSFULLY".
-           STOP RUN.
-       
-       *> STEP L: LOOPS
-       STEP-L.
-           MOVE 1 TO CURRENT-STEP.
-           MOVE "L: LOOPS" TO STEP-NAME.
-           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
-           
-           MOVE 1 TO LOOP-COUNTER.
-           PERFORM UNTIL LOOP-COUNTER > 3
-               DISPLAY "  LOOP ITERATION: " LOOP-COUNTER
-               ADD 1 TO LOOP-COUNTER
-           END-PERFORM.
-           
-           DISPLAY "STEP COMPLETED" CURRENT-STEP.
-       
-       *> STEP C: CONDITIONS
-       STEP-C.
-           MOVE 2 TO CURRENT-STEP.
-           MOVE "C: CONDITIONS" TO STEP-NAME.
-           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
-           
-           MOVE 5 TO RESULT-VALUE.
-           
-           IF RESULT-VALUE > 10
-               DISPLAY "  CONDITION 1: VALUE > 10"
-           ELSE IF RESULT-VALUE > 5
-               DISPLAY "  CONDITION 2: VALUE > 5"
-           ELSE IF RESULT-VALUE = 5
-               DISPLAY "  CONDITION 3: VALUE = 5"
-               MOVE 'Y' TO CONDITION-MET
-           ELSE
-               DISPLAY "  CONDITION 4: VALUE < 5"
-           END-IF.
-           
-           EVALUATE TRUE
-               WHEN CONDITION-MET = 'Y'
-                   DISPLAY "  CONDITION MET USING EVALUATE"
-               WHEN OTHER
-                   DISPLAY "  CONDITION NOT MET USING EVALUATE"
-           END-EVALUATE.
-           
-           DISPLAY "STEP COMPLETED" CURRENT-STEP.
-       
-       *> STEP LC: LOOPS WITH CONDITIONS
-       STEP-LC.
-           MOVE 3 TO CURRENT-STEP.
-           MOVE "LC: LOOPS-CONDITIONS" TO STEP-NAME.
-           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
-           
-           MOVE 1 TO LOOP-COUNTER.
-           PERFORM UNTIL LOOP-COUNTER > 5
-               DISPLAY "  LOOP ITERATION: " LOOP-COUNTER
-               
-               IF FUNCTION MOD(LOOP-COUNTER 2) = 0
-                   DISPLAY "    CONDITION MET: EVEN NUMBER"
-               ELSE
-                   DISPLAY "    CONDITION NOT MET: ODD NUMBER"
-               END-IF
-               
-               ADD 1 TO LOOP-COUNTER
-           END-PERFORM.
-           
-           DISPLAY "STEP COMPLETED" CURRENT-STEP.
-       
-       *> STEP CL: CONDITIONS WITH LOOPS
-       STEP-CL.
-           MOVE 4 TO CURRENT-STEP.
-           MOVE "CL: CONDITIONS-LOOPS" TO STEP-NAME.
-           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
-           
-           MOVE 8 TO RESULT-VALUE.
-           
-           IF RESULT-VALUE < 5
-               DISPLAY "  CONDITION: VALUE < 5"
-               MOVE 1 TO LOOP-COUNTER
-               PERFORM UNTIL LOOP-COUNTER > 3
-                   DISPLAY "    LOOP FOR SMALL VALUES: " LOOP-COUNTER
-                   ADD 1 TO LOOP-COUNTER
-               END-PERFORM
-           ELSE IF RESULT-VALUE < 10
-               DISPLAY "  CONDITION: 5 <= VALUE < 10"
-               MOVE 1 TO LOOP-COUNTER
-               PERFORM UNTIL LOOP-COUNTER > 2
-                   DISPLAY "    LOOP FOR MEDIUM VALUES: " LOOP-COUNTER
-                   ADD 1 TO LOOP-COUNTER
-               END-PERFORM
-           ELSE
-               DISPLAY "  CONDITION: VALUE >= 10"
-               MOVE 1 TO LOOP-COUNTER
-               PERFORM UNTIL LOOP-COUNTER > 1
-                   DISPLAY "    LOOP FOR LARGE VALUES: " LOOP-COUNTER
-                   ADD 1 TO LOOP-COUNTER
-               END-PERFORM
-           END-IF.
-           
-           DISPLAY "STEP COMPLETED" CURRENT-STEP.
-       
-       *> STEP LN: LOOPS WITH NESTED CALLS
-       STEP-LN.
-           MOVE 5 TO CURRENT-STEP.
-           MOVE "LN: LOOPS-NESTED" TO STEP-NAME.
-           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
-           
-           MOVE 1 TO LOOP-COUNTER.
-           PERFORM UNTIL LOOP-COUNTER > 3
-               DISPLAY "  LOOP ITERATION: " LOOP-COUNTER
-               PERFORM NESTED-PROCEDURE-1
-               ADD 1 TO LOOP-COUNTER
-           END-PERFORM.
-           
-           DISPLAY "STEP COMPLETED" CURRENT-STEP.
-       
-       *> STEP NL: NESTED CALLS WITH LOOPS
-       STEP-NL.
-           MOVE 6 TO CURRENT-STEP.
-           MOVE "NL: NESTED-LOOPS" TO STEP-NAME.
-           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
-           
-           PERFORM NESTED-PROCEDURE-2.
-           
-           DISPLAY "STEP COMPLETED" CURRENT-STEP.
-       
-       *> STEP CN: CONDITIONS WITH NESTED CALLS
-       STEP-CN.
-           MOVE 7 TO CURRENT-STEP.
-           MOVE "CN: CONDITIONS-NESTED" TO STEP-NAME.
-           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
-           
-           MOVE 15 TO RESULT-VALUE.
-           
-           IF RESULT-VALUE < 10
-               DISPLAY "  CONDITION: VALUE < 10"
-               PERFORM NESTED-PROCEDURE-1
-           ELSE
-               DISPLAY "  CONDITION: VALUE >= 10"
-               PERFORM NESTED-PROCEDURE-3
-           END-IF.
-           
-           DISPLAY "STEP COMPLETED" CURRENT-STEP.
-       
-       *> STEP NC: NESTED CALLS WITH CONDITIONS
-       STEP-NC.
-           MOVE 8 TO CURRENT-STEP.
-           MOVE "NC: NESTED-CONDITIONS" TO STEP-NAME.
-           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
-           
-           PERFORM NESTED-PROCEDURE-4.
-           
-           DISPLAY "STEP COMPLETED" CURRENT-STEP.
-       
-       *> STEP LCN: LOOPS-CONDITIONS-NESTED
-       STEP-LCN.
-           MOVE 9 TO CURRENT-STEP.
-           MOVE "LCN: LOOPS-COND-NESTED" TO STEP-NAME.
-           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
-           
-           MOVE 1 TO LOOP-COUNTER.
-           PERFORM UNTIL LOOP-COUNTER > 3
-               DISPLAY "  LOOP ITERATION: " LOOP-COUNTER
-               
-               IF FUNCTION MOD(LOOP-COUNTER 2) = 0
-                   DISPLAY "    CONDITION MET: EVEN NUMBER"
-                   PERFORM NESTED-PROCEDURE-1
-               ELSE
-                   DISPLAY "    CONDITION NOT MET: ODD NUMBER"
-                   PERFORM NESTED-PROCEDURE-3
-               END-IF
-               
-               ADD 1 TO LOOP-COUNTER
-           END-PERFORM.
-           
-           DISPLAY "STEP COMPLETED" CURRENT-STEP.
-       
-       *> STEP LNC: LOOPS-NESTED-CONDITIONS
-       STEP-LNC.
-           MOVE 10 TO CURRENT-STEP.
-           MOVE "LNC: LOOPS-NESTED-COND" TO STEP-NAME.
-           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
-           
-           MOVE 1 TO LOOP-COUNTER.
-           PERFORM UNTIL LOOP-COUNTER > 3
-               DISPLAY "  LOOP ITERATION: " LOOP-COUNTER
-               PERFORM NESTED-PROCEDURE-4
-               ADD 1 TO LOOP-COUNTER
-           END-PERFORM.
-           
-           DISPLAY "STEP COMPLETED" CURRENT-STEP.
-       
-       *> STEP CLN: CONDITIONS-LOOPS-NESTED
-       STEP-CLN.
-           MOVE 11 TO CURRENT-STEP.
-           MOVE "CLN: COND-LOOPS-NESTED" TO STEP-NAME.
-           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
-           
-           MOVE 7 TO RESULT-VALUE.
-           
-           IF RESULT-VALUE < 5
-               DISPLAY "  CONDITION: VALUE < 5"
-               MOVE 1 TO LOOP-COUNTER
-               PERFORM UNTIL LOOP-COUNTER > 2
-                   DISPLAY "    LOOP ITERATION: " LOOP-COUNTER
-                   PERFORM NESTED-PROCEDURE-1
-                   ADD 1 TO LOOP-COUNTER
-               END-PERFORM
-           ELSE IF RESULT-VALUE < 10
-               DISPLAY "  CONDITION: 5 <= VALUE < 10"
-               MOVE 1 TO LOOP-COUNTER
-               PERFORM UNTIL LOOP-COUNTER > 2
-                   DISPLAY "    LOOP ITERATION: " LOOP-COUNTER
-                   PERFORM NESTED-PROCEDURE-3
-                   ADD 1 TO LOOP-COUNTER
-               END-PERFORM
-           ELSE
-               DISPLAY "  CONDITION: VALUE >= 10"
-               PERFORM NESTED-PROCEDURE-2
-           END-IF.
-           
-           DISPLAY "STEP COMPLETED" CURRENT-STEP.
-       
-       *> STEP CNL: CONDITIONS-NESTED-LOOPS
-       STEP-CNL.
-           MOVE 12 TO CURRENT-STEP.
-           MOVE "CNL: COND-NESTED-LOOPS" TO STEP-NAME.
-           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
-           
-           MOVE 12 TO RESULT-VALUE.
-           
-           IF RESULT-VALUE < 10
-               DISPLAY "  CONDITION: VALUE < 10"
-               PERFORM NESTED-PROCEDURE-2
-           ELSE
-               DISPLAY "  CONDITION: VALUE >= 10"
-               PERFORM NESTED-PROCEDURE-5
-           END-IF.
-           
-           DISPLAY "STEP COMPLETED" CURRENT-STEP.
-       
-       *> STEP NLC: NESTED-LOOPS-CONDITIONS
-       STEP-NLC.
-           MOVE 13 TO CURRENT-STEP.
-           MOVE "NLC: NESTED-LOOPS-COND" TO STEP-NAME.
-           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
-           
-           PERFORM NESTED-PROCEDURE-6.
-           
-           DISPLAY "STEP COMPLETED" CURRENT-STEP.
-       
-       *> STEP NCL: NESTED-CONDITIONS-LOOPS
-       STEP-NCL.
-           MOVE 14 TO CURRENT-STEP.
-           MOVE "NCL: NESTED-COND-LOOPS" TO STEP-NAME.
-           DISPLAY "STEP " CURRENT-STEP ": " STEP-NAME.
-           
-           PERFORM NESTED-PROCEDURE-7.
-           
-           DISPLAY "STEP COMPLETED" CURRENT-STEP.
-       
-       *> NESTED PROCEDURES
-       NESTED-PROCEDURE-1.
-           DISPLAY "    NESTED CALL: PROCEDURE 1".
-       
-       NESTED-PROCEDURE-2.
-           DISPLAY "    NESTED CALL: PROCEDURE 2".
-           MOVE 1 TO LOOP-COUNTER.
-           PERFORM UNTIL LOOP-COUNTER > 2
-               DISPLAY "      NESTED LOOP ITERATION: " LOOP-COUNTER
-               ADD 1 TO LOOP-COUNTER
-           END-PERFORM.
-       
-       NESTED-PROCEDURE-3.
-           DISPLAY "    NESTED CALL: PROCEDURE 3".
-           PERFORM NESTED-PROCEDURE-1.
-       
-       NESTED-PROCEDURE-4.
-           DISPLAY "    NESTED CALL: PROCEDURE 4".
-           MOVE 3 TO RESULT-VALUE.
-           
-           IF RESULT-VALUE < 5
-               DISPLAY "      NESTED CONDITION MET: < 5"
-           ELSE
-               DISPLAY "      NESTED CONDITION NOT MET: >= 5"
-           END-IF.
-       
-       NESTED-PROCEDURE-5.
-           DISPLAY "    NESTED CALL: PROCEDURE 5".
-           MOVE 1 TO LOOP-COUNTER.
-           PERFORM UNTIL LOOP-COUNTER > 2
-               DISPLAY "      NESTED LOOP ITERATION: " LOOP-COUNTER
-               ADD 1 TO LOOP-COUNTER
-           END-PERFORM.
-       
-       NESTED-PROCEDURE-6.
-           DISPLAY "    NESTED CALL: PROCEDURE 6".
-           PERFORM NESTED-PROCEDURE-1.
-           
-           MOVE 1 TO LOOP-COUNTER.
-           PERFORM UNTIL LOOP-COUNTER > 2
-               DISPLAY "      NESTED LOOP ITERATION: " LOOP-COUNTER
-               
-               IF FUNCTION MOD(LOOP-COUNTER 2) = 0
-                   DISPLAY "        NESTED CONDITION MET: EVEN"
-               ELSE
-                   DISPLAY "        NESTED CONDITION NOT MET: ODD"
-               END-IF
-               
-               ADD 1 TO LOOP-COUNTER
-           END-PERFORM.
-       
-       NESTED-PROCEDURE-7.
-           DISPLAY "    NESTED CALL: PROCEDURE 7".
-           PERFORM NESTED-PROCEDURE-4.
-           
-           MOVE 1 TO LOOP-COUNTER.
-           PERFORM UNTIL LOOP-COUNTER > 2
-               DISPLAY "      NESTED LOOP ITERATION: " LOOP-COUNTER
-               ADD 1 TO LOOP-COUNTER
-           END-PERFORM.
+import streamlit as st
+from pyvis.network import Network
+import networkx as nx
+import streamlit.components.v1 as components
+from pathlib import Path
+import os
+
+# Set page config
+st.set_page_config(
+    page_title="Interactive Graph Visualization",
+    layout="wide"
+)
+
+
+# Function to create sample graph
+def create_sample_graph():
+    G = nx.random_geometric_graph(15, 0.3)
+
+    # Add node attributes
+    for i, node in enumerate(G.nodes()):
+        # Add simple title for hover tooltip
+        G.nodes[node]['title'] = f"Node {node}"
+        G.nodes[node]['label'] = f"Node {node}"
+        G.nodes[node]['id'] = node
+        # Store additional data for custom popups
+        G.nodes[node]['type'] = ['Data', 'Process', 'Input/Output'][i % 3]
+        G.nodes[node]['value'] = round(i * 2.5, 2)
+        # Add various colors for nodes
+        if i % 3 == 0:
+            G.nodes[node]['color'] = '#FF6B6B'
+        elif i % 3 == 1:
+            G.nodes[node]['color'] = '#4ECDC4'
+        else:
+            G.nodes[node]['color'] = '#FFD166'
+
+    return G
+
+
+# Function to convert networkx graph to pyvis with custom popup functionality
+def create_pyvis_graph(nx_graph):
+    # Configure pyvis network
+    pyvis_graph = Network(
+        height="600px",
+        width="100%",
+        bgcolor="#ffffff",
+        font_color="#333333"
+    )
+
+    # Copy nodes and edges from networkx graph
+    for node, node_attrs in nx_graph.nodes(data=True):
+        pyvis_graph.add_node(node, **node_attrs)
+
+    for source, target, edge_attrs in nx_graph.edges(data=True):
+        # Add some edge attributes
+        edge_data = {
+            'title': f"Edge from {source} to {target}",
+            'color': '#999999'
+        }
+        edge_data.update(edge_attrs)
+        pyvis_graph.add_edge(source, target, **edge_data)
+
+    # Configure physics
+    pyvis_graph.barnes_hut(
+        gravity=-80000,
+        central_gravity=0.3,
+        spring_length=200,
+        spring_strength=0.05,
+        damping=0.09
+    )
+
+    # Add popup configuration and interactivity options
+    pyvis_graph.set_options("""
+    {
+        "nodes": {
+            "shape": "dot",
+            "size": 20,
+            "font": {
+                "size": 14,
+                "face": "Tahoma"
+            },
+            "borderWidth": 2,
+            "shadow": true
+        },
+        "edges": {
+            "width": 2,
+            "shadow": true,
+            "smooth": {
+                "type": "continuous",
+                "roundness": 0.5
+            }
+        },
+        "interaction": {
+            "hover": true,
+            "hoverConnectedEdges": true,
+            "selectConnectedEdges": true,
+            "navigationButtons": true,
+            "keyboard": true,
+            "tooltipDelay": 100
+        },
+        "physics": {
+            "stabilization": {
+                "iterations": 100,
+                "fit": true
+            }
+        },
+        "manipulation": {
+            "enabled": false
+        }
+    }
+    """)
+
+    return pyvis_graph
+
+
+def save_and_display_graph(pyvis_graph, nx_graph):
+    # Create a directory for the html file
+    temp_dir = Path("temp_pyvis_html")
+    temp_dir.mkdir(exist_ok=True)
+
+    # Generate a unique file name
+    html_path = temp_dir / "pyvis_graph.html"
+
+    # Save the graph as HTML
+    pyvis_graph.save_graph(str(html_path))
+
+    # Enhance the HTML with custom popup functionality
+    with open(html_path, 'r', encoding='utf-8') as file:
+        html_content = file.read()
+
+    # Create a dictionary of node data for the custom popups
+    node_data = {}
+    for node, attrs in nx_graph.nodes(data=True):
+        node_data[node] = {
+            'id': node,
+            'type': attrs.get('type', 'Unknown'),
+            'value': attrs.get('value', 0)
+        }
+
+    # Create custom popup code
+    # This JavaScript creates styled HTML popups directly in the DOM
+    custom_js = """
+    <style>
+    .node-popup {
+        position: fixed;
+        background-color: white;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        width: 250px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        z-index: 1000;
+        display: none;
+        top: 20px;
+        right: 20px;
+    }
+    .node-popup h3 {
+        margin-top: 0;
+        color: #333;
+    }
+    </style>
+
+    <div id="node-popup" class="node-popup"></div>
+
+    <script>
+    // Node data from Python
+    const nodeData = """ + str(node_data).replace("'", '"') + """;
+
+    // Create a popup element
+    const popup = document.getElementById('node-popup');
+    let activeNode = null;
+
+    // Position the popup in the top right corner of the canvas
+    function positionPopupTopRight() {
+        const canvas = document.getElementById('mynetwork');
+        const canvasRect = canvas.getBoundingClientRect();
+
+        // Position in top right with some padding
+        popup.style.left = (canvasRect.right - popup.offsetWidth - 20) + 'px';
+        popup.style.top = (canvasRect.top + 20) + 'px';
+    }
+
+    // Add click event to show popup
+    network.on("click", function(params) {
+        if (params.nodes.length > 0) {
+            const nodeId = params.nodes[0];
+            const node = network.body.nodes[nodeId];
+
+            // Get node data
+            const data = nodeData[nodeId];
+            if (data) {
+                // Create popup content
+                popup.innerHTML = `
+                    <h3 style="margin-top: 0; color: #333;">Node ${data.id}</h3>
+                    <p><strong>ID:</strong> ${data.id}</p>
+                    <p><strong>Type:</strong> ${data.type}</p>
+                    <p><strong>Value:</strong> ${data.value}</p>
+                `;
+
+                // Display the popup
+                popup.style.display = 'block';
+
+                // Position popup in top right corner
+                positionPopupTopRight();
+
+                // Store active node
+                activeNode = nodeId;
+            }
+        } else {
+            // Hide popup when clicking elsewhere
+            popup.style.display = 'none';
+            activeNode = null;
+        }
+    });
+
+    // Hide popup when canvas is dragged
+    network.on("dragStart", function() {
+        popup.style.display = 'none';
+        activeNode = null;
+    });
+
+    // Keep popup in top right even when zoomed or panned
+    window.addEventListener('resize', function() {
+        if (activeNode !== null) {
+            positionPopupTopRight();
+        }
+    });
+    </script>
+    """
+
+    # Insert custom JS before the closing body tag
+    modified_html = html_content.replace('</body>', f'{custom_js}</body>')
+
+    with open(html_path, 'w', encoding='utf-8') as file:
+        file.write(modified_html)
+
+    # Return the HTML content
+    with open(html_path, 'r', encoding='utf-8') as file:
+        return file.read()
+
+
+# Main app
+def main():
+    st.title("Interactive Graph with Custom Popups")
+
+    # Sidebar for options
+    st.sidebar.header("Graph Options")
+
+    # Option to regenerate graph
+    if st.sidebar.button("Generate New Graph"):
+        st.session_state.graph = create_sample_graph()
+
+    # Initialize graph in session state if not already present
+    if 'graph' not in st.session_state:
+        st.session_state.graph = create_sample_graph()
+
+    # Convert to pyvis and get HTML with custom popups
+    pyvis_graph = create_pyvis_graph(st.session_state.graph)
+    html_content = save_and_display_graph(pyvis_graph, st.session_state.graph)
+
+    # Display instructions
+    st.write("""
+    ### Instructions:
+    - **Click on a node** to see its detailed information in a custom popup
+    - The popup will appear in the top right corner of the canvas and display:
+      - Node ID
+      - Node Type
+      - Node Value
+    - Click anywhere else to dismiss the popup
+    """)
+
+    # Display the graph
+    components.html(html_content, height=600, scrolling=False)
+
+    # Add an expander with additional information
+    with st.expander("About This Visualization"):
+        st.write("""
+        This graph visualization uses pyvis to render an interactive network graph with custom popups.
+
+        Instead of using the built-in tooltip functionality (which escapes HTML), this implementation
+        creates custom DOM elements for the popups that properly render HTML content.
+
+        The popups are positioned dynamically next to the nodes and will stay visible until you
+        click elsewhere on the canvas.
+        """)
+
+
+if __name__ == "__main__":
+    main()
+
+    # Clean up the temporary HTML files when the app is closed
+    temp_dir = Path("temp_pyvis_html")
+    if temp_dir.exists():
+        for file in temp_dir.glob("*.html"):
+            try:
+                file.unlink()
+            except:
+                pass
